@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TextField from "@mui/material/TextField";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import Select from "react-select";
 
 import "./App.css";
 
@@ -9,34 +10,14 @@ function App() {
   const [text, setText] = useState("");
   const [highlight, setHighlight] = useState("");
 
-  useEffect(() => {
-    if (text != "") {
-      setHighlight(window.getSelection().toString());
-    }
-    console.log(highlight);
-  });
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
 
-  // TODO: check this
-  const getHighlightedText = (text, highlight) => {
-    // Split on highlight term and include term into parts, ignore case
-    const parts = text.split(new RegExp(`(${highlight})`, "gi"));
-    return (
-      <span>
-        {" "}
-        {parts.map((part, i) => (
-          <span
-            key={i}
-            style={
-              part.toLowerCase() === highlight.toLowerCase()
-                ? { fontWeight: "bold" }
-                : {}
-            }
-          >
-            {part}
-          </span>
-        ))}{" "}
-      </span>
-    );
+  const handleSelectChange = (val) => {
+    console.log(val);
   };
 
   return (
@@ -51,9 +32,12 @@ function App() {
             value={text}
             fullWidth
             onChange={(e) => setText(e.target.value)}
-            onMouseUp={() => getHighlightedText(text, highlight)}
+            onMouseUp={() => setHighlight(window.getSelection().toString())}
           />
         </CardContent>
+        {highlight && (
+          <Select options={options} onChange={handleSelectChange} />
+        )}
       </Card>
     </div>
   );
