@@ -1,16 +1,37 @@
 import { useState } from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
+import Typography from "@mui/material/Typography";
 import Select from "react-select";
-
 import "./App.css";
 
-const articleTag = [];
+function Copyright(props) {
+  return (
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Developed by "}
+      <Link color="inherit" href="https://github.com/Adil-io">
+        Adil-io
+      </Link>{" "}
+    </Typography>
+  );
+}
 
-function App() {
+export default function App() {
   const [text, setText] = useState("");
   const [highlight, setHighlight] = useState("");
+  const [articleTag, setArticleTag] = useState([]);
 
   const options = [
     { value: "chocolate", label: "Chocolate" },
@@ -18,38 +39,102 @@ function App() {
     { value: "vanilla", label: "Vanilla" },
   ];
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(articleTag);
+  };
+
   const handleSelectChange = (option) => {
     const tag = {
       technique: option.value,
       text: highlight,
       taggedText: `<${option.value}>${highlight}</${option.value}>`,
     };
-    articleTag.push(tag);
-
-    console.log(articleTag);
+    setArticleTag((prevTags) => [...prevTags, tag]);
   };
 
   return (
-    <div className="App">
-      <Card className="container">
-        <CardContent className="content">
-          <TextField
-            id="outlined-multiline-static"
-            label="Paste Text Here"
-            multiline
-            rows={5}
-            value={text}
-            fullWidth
-            onChange={(e) => setText(e.target.value)}
-            onMouseUp={() => setHighlight(window.getSelection().toString())}
-          />
-        </CardContent>
-        {highlight && (
-          <Select options={options} onChange={handleSelectChange} />
-        )}
-      </Card>
-    </div>
+    <Grid container component="main" sx={{ height: "100vh" }}>
+      <CssBaseline />
+      <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+        <Box
+          sx={{
+            my: 8,
+            mx: 4,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar
+            sx={{
+              m: 1,
+              bgcolor: "primary.main",
+              marginTop: 4,
+            }}
+          >
+            <EditNoteRoundedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Article Tagging
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 1, marginTop: 5, width: "100%" }}
+          >
+            <TextField
+              className="box-item"
+              id="outlined-multiline-static"
+              label="Paste Text Here"
+              multiline
+              rows={16}
+              value={text}
+              fullWidth
+              onChange={(e) => setText(e.target.value)}
+              onMouseUp={() => setHighlight(window.getSelection().toString())}
+            />
+            {highlight && (
+              <Select
+                className="box-item"
+                options={options}
+                onChange={handleSelectChange}
+              />
+            )}
+            {articleTag.length > 0 && (
+              <Button
+                className="box-button"
+                type="submit"
+                fullWidth
+                variant="outline"
+                color="primary"
+                sx={{ mt: 3, mb: 2 }}
+                size="md"
+              >
+                Export to Excel
+              </Button>
+            )}
+          </Box>
+          <Copyright className="footer" sx={{ mt: 5 }} />
+        </Box>
+      </Grid>
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={7}
+        sx={{
+          backgroundImage: "url(https://source.unsplash.com/random?wallpapers)",
+          backgroundRepeat: "no-repeat",
+          backgroundColor: (t) =>
+            t.palette.mode === "light"
+              ? t.palette.grey[50]
+              : t.palette.grey[900],
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      />
+    </Grid>
   );
 }
-
-export default App;
