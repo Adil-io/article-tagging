@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "@mui/material/Link";
@@ -10,6 +9,7 @@ import Grid from "@mui/material/Grid";
 import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
 import Typography from "@mui/material/Typography";
 import Select from "react-select";
+import { ExportToExcel } from "./components/ExportToExcel";
 import "./App.css";
 
 function Copyright(props) {
@@ -29,6 +29,8 @@ function Copyright(props) {
 }
 
 export default function App() {
+  const fileName = `Tagged Article ${new Date().toDateString()}`;
+
   const [text, setText] = useState("");
   const [highlight, setHighlight] = useState("");
   const [articleTag, setArticleTag] = useState([]);
@@ -38,11 +40,6 @@ export default function App() {
     { value: "strawberry", label: "Strawberry" },
     { value: "vanilla", label: "Vanilla" },
   ];
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    console.log(articleTag);
-  };
 
   const handleSelectChange = (option) => {
     const tag = {
@@ -81,7 +78,6 @@ export default function App() {
           <Box
             component="form"
             noValidate
-            onSubmit={handleSubmit}
             sx={{ mt: 1, marginTop: 5, width: "100%" }}
           >
             <TextField
@@ -103,17 +99,7 @@ export default function App() {
               />
             )}
             {articleTag.length > 0 && (
-              <Button
-                className="box-button"
-                type="submit"
-                fullWidth
-                variant="outline"
-                color="primary"
-                sx={{ mt: 3, mb: 2 }}
-                size="md"
-              >
-                Export to Excel
-              </Button>
+              <ExportToExcel apiData={articleTag} fileName={fileName} />
             )}
           </Box>
           <Copyright className="footer" sx={{ mt: 5 }} />
