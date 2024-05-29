@@ -6,6 +6,8 @@ import Select from "react-select";
 
 import "./App.css";
 
+const articleTag = [];
+
 function App() {
   const [text, setText] = useState("");
   const [highlight, setHighlight] = useState("");
@@ -16,8 +18,15 @@ function App() {
     { value: "vanilla", label: "Vanilla" },
   ];
 
-  const handleSelectChange = (val) => {
-    console.log(val);
+  const handleSelectChange = (option) => {
+    const tag = {
+      technique: option.value,
+      text: highlight,
+      taggedText: `<${option.value}>${highlight}</${option.value}>`,
+    };
+    articleTag.push(tag);
+
+    console.log(articleTag);
   };
 
   return (
