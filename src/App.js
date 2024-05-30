@@ -1,13 +1,17 @@
 import { useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import EditNoteRoundedIcon from "@mui/icons-material/EditNoteRounded";
-import Typography from "@mui/material/Typography";
+import {
+  Avatar,
+  CssBaseline,
+  TextField,
+  Link,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+  Snackbar,
+  Alert,
+} from "@mui/material";
 import Select from "react-select";
 import { ExportToExcel } from "./components/ExportToExcel";
 import "./App.css";
@@ -34,6 +38,7 @@ export default function App() {
   const [text, setText] = useState("");
   const [highlight, setHighlight] = useState("");
   const [articleTag, setArticleTag] = useState([]);
+  const [open, setOpen] = useState(false);
 
   const options = [
     { value: "chocolate", label: "Chocolate" },
@@ -48,6 +53,19 @@ export default function App() {
       taggedText: `<${option.value}>${highlight}</${option.value}>`,
     };
     setArticleTag((prevTags) => [...prevTags, tag]);
+    setOpen(true);
+    setHighlight("");
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setHighlight("");
+  };
+
+  const resetState = () => {
+    setText("");
+    setHighlight("");
+    setArticleTag([]);
   };
 
   return (
@@ -83,7 +101,7 @@ export default function App() {
             <TextField
               className="box-item"
               id="outlined-multiline-static"
-              label="Paste Text Here"
+              label="Paste Article Here"
               multiline
               rows={16}
               value={text}
@@ -98,8 +116,27 @@ export default function App() {
                 onChange={handleSelectChange}
               />
             )}
+            <Snackbar
+              open={open}
+              autoHideDuration={4000}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+            >
+              <Alert
+                onClose={handleClose}
+                severity="success"
+                variant="filled"
+                sx={{ width: "100%" }}
+              >
+                Technique was tagged for the selected text!
+              </Alert>
+            </Snackbar>
             {articleTag.length > 0 && (
-              <ExportToExcel apiData={articleTag} fileName={fileName} />
+              <ExportToExcel
+                apiData={articleTag}
+                fileName={fileName}
+                resetState={resetState}
+              />
             )}
           </Box>
           <Copyright className="footer" sx={{ mt: 5 }} />
