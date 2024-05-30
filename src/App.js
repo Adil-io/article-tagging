@@ -114,11 +114,12 @@ export default function App() {
                 className="box-item"
                 options={options}
                 onChange={handleSelectChange}
+                placeholder="Select Technique"
               />
             )}
             <Snackbar
               open={open}
-              autoHideDuration={4000}
+              autoHideDuration={3000}
               onClose={handleClose}
               anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
             >

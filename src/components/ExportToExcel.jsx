@@ -26,8 +26,7 @@ export const ExportToExcel = ({ apiData, fileName, resetState }) => {
 
   const handleClose = () => {
     setOpen(false);
-    setError("");
-    resetState();
+    error.length > 0 ? setError("") : resetState();
   };
 
   return (
@@ -60,7 +59,7 @@ export const ExportToExcel = ({ apiData, fileName, resetState }) => {
           sx={{ width: "100%" }}
         >
           {error.length > 0
-            ? `Export to Excel FAILED: error = ${error}`
+            ? `Export to Excel FAILED with error: ${error}`
             : `Excel exported successfully! with File Name: ${
                 fileName + fileExtension
               }`}
