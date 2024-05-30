@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/article-tagging/static/css/main.f55ca8b2.css",
+    "main.js": "/article-tagging/static/js/main.58b9c463.js",
+    "index.html": "/article-tagging/index.html",
+    "main.f55ca8b2.css.map": "/article-tagging/static/css/main.f55ca8b2.css.map",
+    "main.58b9c463.js.map": "/article-tagging/static/js/main.58b9c463.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f55ca8b2.css",
+    "static/js/main.58b9c463.js"
+  ]
+}
