@@ -3,13 +3,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { useEffect, useState } from 'react';
 
 const ArticleOutput = ({ article, tags }) => {
-  const [taggedText, setTaggedText] = useState('');
+  const [taggedArticle, setTaggedArticle] = useState('');
 
   useEffect(() => {
+    let taggedText = article;
     tags.forEach((tag) => {
-      article = article.replace(tag.articleText, tag.taggedText);
+      let firstPart = taggedText.slice(0, tag.selection.start);
+      let lastPart = taggedText.slice(tag.selection.end, article.length);
+      taggedText = firstPart + tag.taggedSelection + lastPart;
     });
-    setTaggedText(article);
+    setTaggedArticle(taggedText);
   }, [tags]);
 
   return (
@@ -25,7 +28,7 @@ const ArticleOutput = ({ article, tags }) => {
             placeholder="Tagged Article will be shown here..."
             className="text-lg"
             readOnly={true}
-            value={taggedText}
+            value={taggedArticle}
           />
         </CardContent>
       </Card>
