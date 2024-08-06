@@ -6,14 +6,32 @@ const ArticleOutput = ({ article, tags }) => {
   const [taggedArticle, setTaggedArticle] = useState('');
 
   useEffect(() => {
-    let taggedText = article;
-    tags.forEach((tag) => {
-      let firstPart = taggedText.slice(0, tag.selection.start);
-      let lastPart = taggedText.slice(tag.selection.end, article.length);
-      taggedText = firstPart + tag.taggedSelection + lastPart;
-    });
-    setTaggedArticle(taggedText);
-  }, [tags]);
+    const applyTags = () => {
+      let taggedText = article;
+      let offset = 0;
+
+      tags.forEach((tag) => {
+        const { start, end } = tag.selection;
+        const openTag = `<${tag.tagType}>`;
+        const closeTag = `</${tag.tagType}>`;
+
+        const adjustedEnd = end + offset;
+
+        taggedText =
+          taggedText.slice(0, start + offset) +
+          openTag +
+          taggedText.slice(start + offset, adjustedEnd) +
+          closeTag +
+          taggedText.slice(adjustedEnd);
+
+        offset += openTag.length + closeTag.length;
+      });
+
+      setTaggedArticle(taggedText);
+    };
+
+    applyTags();
+  }, [article, tags]);
 
   return (
     <div className="bg-card-background flex flex-1">
