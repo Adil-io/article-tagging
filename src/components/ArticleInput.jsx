@@ -42,9 +42,14 @@ const ArticleInput = ({ article, setArticle, setTags }) => {
   const handleOnChange = (e) => {
     const tag = {
       selection,
-      taggedSelection: `<${e.value}>${selection.text}</${e.value}>`,
+      tagType: e.value,
     };
-    setTags((prevTags) => [...prevTags, tag]);
+    setTags((prevTags) => {
+      const sortedTags = [...prevTags, tag].sort(
+        (a, b) => a.selection.start - b.selection.start,
+      );
+      return sortedTags;
+    });
     resetState();
   };
 
