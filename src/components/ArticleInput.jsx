@@ -34,22 +34,23 @@ const ArticleInput = ({ article, setArticle, setTags }) => {
     };
   }, []);
 
+  const addTag = (prevTags, selection, tagType) => {
+    const newTag = {
+      selection,
+      tagType,
+    };
+    return [...prevTags, newTag].sort(
+      (a, b) => b.selection.start - a.selection.start,
+    );
+  };
+
   const handleContextMenu = (e) => {
     e.preventDefault();
     resetState();
   };
 
   const handleOnChange = (e) => {
-    const tag = {
-      selection,
-      tagType: e.value,
-    };
-    setTags((prevTags) => {
-      const sortedTags = [...prevTags, tag].sort(
-        (a, b) => b.selection.start - a.selection.start,
-      );
-      return sortedTags;
-    });
+    setTags((prevTags) => addTag(prevTags, selection, e.value));
     resetState();
   };
 
