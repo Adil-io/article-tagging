@@ -8,28 +8,20 @@ const ArticleOutput = ({ article, tags }) => {
   useEffect(() => {
     const applyTags = () => {
       let taggedText = article;
-      let offset = 0;
 
+      // Apply tags to the article
       tags.forEach((tag) => {
         const { start, end } = tag.selection;
-        const openTag = `<${tag.tagType}>`;
-        const closeTag = `</${tag.tagType}>`;
-
-        const adjustedEnd = end + offset;
-
+        const tagType = tag.tagType;
+        // Insert end tag
         taggedText =
-          taggedText.slice(0, start + offset) +
-          openTag +
-          taggedText.slice(start + offset, adjustedEnd) +
-          closeTag +
-          taggedText.slice(adjustedEnd);
-
-        offset += openTag.length + closeTag.length;
+          taggedText.slice(0, end) + `</${tagType}>` + taggedText.slice(end);
+        // Insert start tag
+        taggedText =
+          taggedText.slice(0, start) + `<${tagType}>` + taggedText.slice(start);
       });
-
       setTaggedArticle(taggedText);
     };
-
     applyTags();
   }, [article, tags]);
 

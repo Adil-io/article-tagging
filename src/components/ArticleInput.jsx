@@ -46,7 +46,7 @@ const ArticleInput = ({ article, setArticle, setTags }) => {
     };
     setTags((prevTags) => {
       const sortedTags = [...prevTags, tag].sort(
-        (a, b) => a.selection.start - b.selection.start,
+        (a, b) => b.selection.start - a.selection.start,
       );
       return sortedTags;
     });
